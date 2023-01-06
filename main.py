@@ -19,6 +19,13 @@ def levenstein(str_1, str_2):
     return current_row[n]
 
 
+def string_cut(string):
+    string = string.replace("\n", "")
+    string = string.replace("\0", "")
+    string = string.replace(" ", "")
+    return string
+
+
 parser = argparse.ArgumentParser(description="Antiplagiarism script")
 
 parser.add_argument("-i", dest="input_file", required=True)
@@ -40,27 +47,15 @@ while True:
     first_file = open(files[0])
     second_file = open(files[1])
 
-    first_f = str(first_file)
-    second_f = str(second_file)
+    first_f = first_file.read()
+    second_f = second_file.read()
 
-    first_file.close()
-    second_file.close()
+    first_f = string_cut(first_f)
+    second_f = string_cut(second_f)
 
-    first_f.replace("\n", "")
-    second_f.replace("\n", "")
-    
-    similarity_score = levenstein(first_f, second_f) / len(second_f)
+    similarity_score = 1 - levenstein(first_f, second_f) / len(second_f)
 
     output_file.write(str(similarity_score) + "\n")
 
 input_file.close()
 output_file.close()
-
-print("All Done!")
-
-
-
-
-
-
-
